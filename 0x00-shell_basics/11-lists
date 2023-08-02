@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Get the current working directory
+current_dir=$(pwd)
+
+# List all files in the current directory, including hidden files
+ls -la $current_dir
+
+# List all files in the parent directory, including hidden files
+ls -la ..
+
+# List all files in the /boot directory, including hidden files
+ls -la /boot
