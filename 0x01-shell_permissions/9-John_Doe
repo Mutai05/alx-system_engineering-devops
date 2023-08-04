@@ -1,4 +1,2 @@
 #!/bin/bash
-chmod 711 hello
 chmod u+wrx hello
-chmod o=wx hello
