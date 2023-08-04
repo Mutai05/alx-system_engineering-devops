@@ -1,4 +1,4 @@
-Permissions:
+**Permissions:**
 
 1. chmod: This command is used to change the permissions of a file or directory in Linux. It allows you to add or remove permissions for the owner, group, and others (everyone else). The permissions are represented by three digits: user (owner) permissions, group permissions, and others permissions.
 
