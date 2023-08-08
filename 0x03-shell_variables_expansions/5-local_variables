@@ -1,2 +1,3 @@
 #!/bin/bash
-compgen -v; compgen -A function
+compgen -v
+compgen -A function
