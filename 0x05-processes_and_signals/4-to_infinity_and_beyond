@@ -2,6 +2,13 @@
 # This script displays "To infinity and beyond" indefinitely with a sleep of 2 seconds between iterations
 
 while true; do
+    # Check for the existence of the stop flag file and terminate if found
+    if [ -f stop_flag_for_infinity_process ]; then
+        echo "Terminated"
+        rm stop_flag_for_infinity_process
+        exit 0
+    fi
+
     echo "To infinity and beyond"
     sleep 2
 done
