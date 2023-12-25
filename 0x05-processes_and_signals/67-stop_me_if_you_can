@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# This script stops the 4-to_infinity_and_beyond process
+
+# Create a flag file to signal the other script to stop
+touch stop_flag_for_infinity_process
