@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# Script to display all active IPv4 IPs on the machine
+
+# Use ifconfig to extract IPv4 addresses
+ifconfig | grep -oE 'inet (addr:)?([0-9]*\.){3}[0-9]*' | awk '{gsub("addr:",""); print $2}'
