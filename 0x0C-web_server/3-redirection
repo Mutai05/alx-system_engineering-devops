@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# Configure Nginx redirection for /redirect_me
+# Script that configures a new Ubuntu machine to respect above requirements
 
-# Replace the default configuration for /redirect_me
-sed -i '/location \/redirect_me {/!b;n;c\\treturn 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;' /etc/nginx/sites-available/default
+sudo apt-get update
+sudo apt-get install -y nginx
 
-# Restart Nginx without using systemctl
-kill -HUP $(pgrep -f "nginx: master process")
+echo "Hello World!" | sudo tee /var/www/html/index.html
+string_for_replacement="server_name _;\n\trewrite ^\/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;"
+sudo sed -i "s/server_name _;/$string_for_replacement/" /etc/nginx/sites-enabled/default
 
-# Display success message
-echo "Nginx redirection configured successfully for /redirect_me"
+sudo service nginx restart
