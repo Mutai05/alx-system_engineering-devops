@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# Configure Nginx redirection for /redirect_me
+
+# Replace the default configuration for /redirect_me
+sed -i '/location \/redirect_me {/!b;n;c\\treturn 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;' /etc/nginx/sites-available/default
+
+# Restart Nginx without using systemctl
+kill -HUP $(pgrep -f "nginx: master process")
+
+# Display success message
+echo "Nginx redirection configured successfully for /redirect_me"
