@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Configure Nginx to include custom HTTP response header
+# Configure web-02 to be identical to web-01 with a custom HTTP response header
 
 # Update package list
 sudo apt-get -y update
@@ -7,11 +7,47 @@ sudo apt-get -y update
 # Install Nginx
 sudo apt-get -y install nginx
 
-# Add custom header configuration to the default site configuration
-sudo sed -i '/server_name _;/a \\\tadd_header X-Served-By $HOSTNAME;' /etc/nginx/sites-available/default
+# Allow Nginx HTTP traffic using UFW
+sudo ufw allow 'Nginx HTTP'
+
+# Create directories and set permissions
+sudo mkdir -p /var/www/html /var/www/error
+sudo chmod -R 755 /var/www
+
+# Create index.html and 404.html files
+echo 'Hello World!' > /var/www/html/index.html
+echo "Ceci n'est pas une page" > /var/www/html/404.html
+
+# Define Nginx server configuration
+server_config="server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    root /var/www/html;
+    index index.html index.htm index.nginx-debian.html;
+    server_name _;
+    add_header X-Served-By \$hostname;
+    location / {
+        try_files \$uri \$uri/ =404;
+    }
+    if (\$request_filename ~ redirect_me){
+        rewrite ^ https://youtube.com permanent;
+    }
+    error_page 404 /404.html;
+    location = /404.html {
+        internal;
+    }
+}"
+
+# Check if default configuration exists and back up if necessary
+if [ -f "/etc/nginx/sites-enabled/default" ]; then
+    sudo mv /etc/nginx/sites-enabled/default /etc/nginx/sites-enabled/default_backup
+fi
+
+# Write the Nginx server configuration to the default site
+echo "$server_config" | sudo tee /etc/nginx/sites-enabled/default > /dev/null
 
 # Restart Nginx
 sudo service nginx restart
 
 # Display success message
-echo "Nginx configured with custom HTTP response header successfully."
+echo "Nginx configured with custom HTTP response header on web-02."
