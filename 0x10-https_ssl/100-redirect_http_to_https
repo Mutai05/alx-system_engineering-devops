@@ -1,0 +1,16 @@
+# 100-redirect_http_to_https
+
+frontend www-http
+    bind *:80
+    mode http
+    redirect scheme https code 301 if !{ ssl_fc }
+
+frontend www-https
+    bind *:443 ssl crt /etc/letsencrypt/live/www.mutaikelvin.tech/fullchain.pem
+
+    reqadd X-Forwarded-Proto:\ https
+    acl is_holberton hdr_end(host) -i www.holberton.online
+    use_backend holberton if is_holberton
+
+backend holberton
+    server webserver1 192.168.1.10:80 check
