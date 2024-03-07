@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# nginx server configuration to listen on port 80
+
+# Remove default nginx file config, create symbolic link, and restart nginx
+rm /etc/nginx/sites-enabled/default && ln -s /etc/nginx/sites-available/
+default /etc/nginx/sites-enabled/default && service nginx restart
