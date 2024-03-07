@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-# nginx server configuration to listen on port 80
-
-# Remove default nginx file config, create symbolic link, and restart nginx
-rm /etc/nginx/sites-enabled/default && ln -s /etc/nginx/sites-available/
-default /etc/nginx/sites-enabled/default && service nginx restart
+# debugging nginx (service (init) must say that nginx is not running)
+sed -i 's/8080/80/g' /etc/nginx/sites-enabled/default
+service nginx restart
+pkill -o nginx
