@@ -1,0 +1,1 @@
+Have you ever wondered what goes on behind the curtain when you type a web address and hit enter? As a Full-Stack Software Engineer, understanding this process is crucial. Fear not, for we’re about to embark on a journey into the fascinating world of how the web works!
