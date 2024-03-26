@@ -1,45 +1,31 @@
 #!/usr/bin/python3
-"""Script to retrieve TODO list progress of an employee from a given API"""
+"""Accessing a REST API for todo lists of employees"""
 
 import requests
-from sys import argv
+import sys
 
 
-def fetch_todo_list(employee_id):
-    """Fetches TODO list progress of an employee from a given API"""
-    url_users = 'https://jsonplaceholder.typicode.com/users'
-    url_todos = 'https://jsonplaceholder.typicode.com/todos'
+if __name__ == '__main__':
+    employeeId = sys.argv[1]
+    baseUrl = "https://jsonplaceholder.typicode.com/users"
+    url = baseUrl + "/" + employeeId
 
-    # Retrieve user information
-    response_users = requests.get(url_users, params={'id': employee_id})
-    employee_info = response_users.json()
-    employee_name = employee_info[0]['name']
+    response = requests.get(url)
+    employeeName = response.json().get('name')
 
-    # Retrieve TODO list of the employee
-    response_todos = requests.get(url_todos, params={'userId': employee_id})
-    todos = response_todos.json()
+    todoUrl = url + "/todos"
+    response = requests.get(todoUrl)
+    tasks = response.json()
+    done = 0
+    done_tasks = []
 
-    # Count completed tasks
-    completed_tasks = [todo for todo in todos if todo['completed']]
-    num_completed_tasks = len(completed_tasks)
-    total_tasks = len(todos)
+    for task in tasks:
+        if task.get('completed'):
+            done_tasks.append(task)
+            done += 1
 
-    # Print the progress
-    print("Employee {} is done with tasks({}/{}):".format(
-        employee_name, num_completed_tasks, total_tasks))
-    for todo in completed_tasks:
-        print("\t {}".format(todo['title']))
+    print("Employee {} is done with tasks({}/{}):"
+          .format(employeeName, done, len(tasks)))
 
-
-if __name__ == "__main__":
-    if len(argv) != 2:
-        print("Usage: {} <employee_id>".format(argv[0]))
-        exit(1)
-
-    try:
-        employee_id = int(argv[1])
-    except ValueError:
-        print("Employee ID must be an integer")
-        exit(1)
-
-    fetch_todo_list(employee_id)
+    for task in done_tasks:
+        print("\t {}".format(task.get('title')))
