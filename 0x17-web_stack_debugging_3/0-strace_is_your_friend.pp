@@ -1,13 +1,6 @@
-# File: 0-strace_is_your_friend.pp
+# Fixes Apache 500 error
 
-# Ensure Apache is installed (you can adjust this based on your actual setup)
-package { 'apache2':
-  ensure => 'installed',
-}
-
-# Define an Apache virtual host
-apache::vhost { 'mywebsite':
-  servername => 'mywebsite.com',
-  docroot    => '/var/www/mywebsite',
-  # Add other necessary parameters (e.g., SSL settings, aliases, etc.)
+exec { 'fix-wordpress':
+  command => 'sed -i s/phpp/php/g /var/www/html/wp-settings.php',
+  path    => '/usr/local/bin/:/bin/'
 }
