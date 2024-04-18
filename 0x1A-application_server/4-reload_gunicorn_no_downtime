@@ -1,1 +1,9 @@
-wq
+#!/bin/bash
+
+# Get the PID of the Gunicorn master process
+MASTER_PID=$(pgrep -f "gunicorn.*--master")
+
+# Gracefully reload Gunicorn by sending a HUP signal to the master process
+kill -HUP $MASTER_PID
+
+echo "Gunicorn has been reloaded gracefully."
